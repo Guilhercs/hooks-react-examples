@@ -1,9 +1,18 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import "./dialog.style.css";
+import { IconClose } from "../icons";
 
-export function Dialog() {
+export function Dialog({ isOpen, onClose, children }) {
   //O UseRef serve para criar uma referência mutável que persiste por todo o ciclo de vida do componente. Ele é comumente usado para acessar diretamente elementos DOM ou armazenar valores mutáveis que não causam uma nova renderização quando alterados. De forma simples, ele permite que você mantenha uma referência a um elemento ou valor entre renderizações sem disparar uma atualização do componente. Alternativa ao document.getElementById ou outras manipulações diretas do DOM (pois o document.getElementById retorna null).
   const dialog = useRef();
+
+  useEffect(() => {
+    if (isOpen) {
+      openDialog();
+    } else {
+      closeDialog();
+    }
+  }, [isOpen]);
 
   const openDialog = () => {
     dialog.current.showModal();
@@ -15,13 +24,14 @@ export function Dialog() {
 
   return (
     <React.Fragment>
-      <dialog ref={dialog}>
-        <button autoFocus onClick={closeDialog}>
-          Close
-        </button>
-        <p>This is Amazing Dialog</p>
+      <dialog className="dialog" ref={dialog}>
+        <div className="btn-close-wrapper">
+          <button autoFocus onClick={onClose} className="btn-close">
+            <IconClose />
+          </button>
+        </div>
+        <div className="card-body">{children}</div>
       </dialog>
-      <button onClick={openDialog}>Give me the money</button>
     </React.Fragment>
   );
 }

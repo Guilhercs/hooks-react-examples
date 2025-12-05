@@ -9,6 +9,9 @@ import { SubHeading } from "./components/SubHeading";
 import { ToDoItem } from "./components/ToDoItem";
 import { ToDoList } from "./components/ToDoList";
 import { Dialog } from "./components/Dialog";
+import { TextInput } from "./components/TextInput";
+import { Button } from "./components/Button";
+import { useState } from "react";
 
 const todos = [
   {
@@ -52,6 +55,12 @@ const completed = [
 ];
 
 function App() {
+  const [showDialog, setShowDialog] = useState(false);
+
+  const toggleDialog = () => {
+    setShowDialog(!showDialog);
+  };
+
   return (
     <main>
       <Container>
@@ -74,12 +83,17 @@ function App() {
             })}
           </ToDoList>
           <Footer>
-            <FabButton>
+            <Dialog isOpen={showDialog} onClose={toggleDialog}>
+              <form>
+                <TextInput placeHolder="Digite uma nova tarefa" />
+                <Button>Adicionar</Button>
+              </form>
+            </Dialog>
+            <FabButton onClick={toggleDialog}>
               <IconPlus />
             </FabButton>
           </Footer>
         </ChecklistsWrapper>
-        <Dialog />
       </Container>
     </main>
   );
