@@ -39,39 +39,47 @@ const todos = [
     createdAt: "2022-10-31",
   },
 ];
-const completed = [
-  {
-    id: 5,
-    description: "Controle de inputs e formulários controlados",
-    completed: true,
-    createdAt: "2022-10-31",
-  },
-  {
-    id: 6,
-    description: "Rotas dinâmicas",
-    completed: true,
-    createdAt: "2022-10-31",
-  },
-];
 
 function App() {
-  const [showDialog, setShowDialog] = useState(false);
   const [todosList, setTodos] = useState(todos);
+  const [showDialog, setShowDialog] = useState(false);
 
   const toggleDialog = () => {
     setShowDialog(!showDialog);
   };
 
-  function onSubmit(event) {
+  function addTodo(event) {
     const newTodo = {
       description: event.get("task"),
       completed: false,
       createdAt: new Date().toISOString(),
     };
 
-    setTodos((prev) => [...prev, newTodo]);
+    setTodos((prev) => {
+      return [...prev, { id: prev.length, ...newTodo }];
+    });
     toggleDialog();
   }
+
+  const toggleTodoCompleted = (todo) => {
+    setTodos((prev) => {
+      return prev.map((item) => {
+        if (item.id === todo.id) {
+          return {
+            ...item,
+            completed: !item.completed,
+          };
+        }
+        return item;
+      });
+    });
+  };
+
+  const removeTodo = (item) => {
+    setTodos((prev) => {
+      return prev.filter((t) => t.id !== item.id);
+    });
+  };
 
   return (
     <main>
@@ -84,20 +92,38 @@ function App() {
         <ChecklistsWrapper>
           <SubHeading>Para estudar</SubHeading>
           <ToDoList>
-            {todosList.map(function (t) {
-              return <ToDoItem key={t.id} item={t} />;
-            })}
+            {todosList
+              .filter((item) => !item.completed)
+              .map(function (t) {
+                return (
+                  <ToDoItem
+                    key={t.id}
+                    item={t}
+                    onToggleCompleted={toggleTodoCompleted}
+                    onDeleteTodo={removeTodo}
+                  />
+                );
+              })}
           </ToDoList>
           <SubHeading>Concluído</SubHeading>
           <ToDoList>
-            {completed.map(function (t) {
-              return <ToDoItem key={t.id} item={t} />;
-            })}
+            {todosList
+              .filter((item) => item.completed)
+              .map(function (t) {
+                return (
+                  <ToDoItem
+                    key={t.id}
+                    item={t}
+                    onToggleCompleted={toggleTodoCompleted}
+                    onDeleteTodo={removeTodo}
+                  />
+                );
+              })}
           </ToDoList>
           <Footer>
             <Dialog isOpen={showDialog} onClose={toggleDialog}>
               <form
-                action={onSubmit}
+                action={addTodo}
                 style={{
                   display: "flex",
                   flexDirection: "column",
