@@ -56,10 +56,22 @@ const completed = [
 
 function App() {
   const [showDialog, setShowDialog] = useState(false);
+  const [todosList, setTodos] = useState(todos);
 
   const toggleDialog = () => {
     setShowDialog(!showDialog);
   };
+
+  function onSubmit(event) {
+    const newTodo = {
+      description: event.get("task"),
+      completed: false,
+      createdAt: new Date().toISOString(),
+    };
+
+    setTodos((prev) => [...prev, newTodo]);
+    toggleDialog();
+  }
 
   return (
     <main>
@@ -72,7 +84,7 @@ function App() {
         <ChecklistsWrapper>
           <SubHeading>Para estudar</SubHeading>
           <ToDoList>
-            {todos.map(function (t) {
+            {todosList.map(function (t) {
               return <ToDoItem key={t.id} item={t} />;
             })}
           </ToDoList>
@@ -84,8 +96,16 @@ function App() {
           </ToDoList>
           <Footer>
             <Dialog isOpen={showDialog} onClose={toggleDialog}>
-              <form>
-                <TextInput placeHolder="Digite uma nova tarefa" />
+              <form
+                action={onSubmit}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
+                  alignItems: "center",
+                }}
+              >
+                <TextInput name="task" placeholder="Digite uma nova tarefa" />
                 <Button>Adicionar</Button>
               </form>
             </Dialog>
