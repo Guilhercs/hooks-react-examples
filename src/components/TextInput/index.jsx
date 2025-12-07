@@ -1,5 +1,5 @@
 import "./text-input.style.css";
 
-export function TextInput({ ...rest }) {
-  return <input className="text-input" {...rest} />;
+export function TextInput({ defaultValue, ...rest }) {
+  return <input defaultValue={defaultValue} className="text-input" {...rest} />;
 }

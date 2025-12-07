@@ -8,21 +8,23 @@ import { IconPlus, IconSchool } from "./components/icons";
 import { Dialog } from "./components/Dialog";
 import { TextInput } from "./components/TextInput";
 import { Button } from "./components/Button";
-import { useState, use } from "react";
+import { use } from "react";
 import TodoContext from "./components/TodoProvider/TodoContext";
 import { TodoGroup } from "./components/TodoGroup";
 
 function App() {
-  const [showDialog, setShowDialog] = useState(false);
-  const { todosList, addTodo } = use(TodoContext);
-
-  const toggleDialog = () => {
-    setShowDialog(!showDialog);
-  };
+  const {
+    addTodo,
+    todosList,
+    showDialog,
+    selectedTodo,
+    openFormTodoDialog,
+    closeFormTodoDialog,
+  } = use(TodoContext);
 
   const handleFormSubmit = (formData) => {
     addTodo(formData);
-    toggleDialog();
+    closeFormTodoDialog();
   };
 
   return (
@@ -43,7 +45,7 @@ function App() {
             items={todosList.filter((item) => item.completed)}
           ></TodoGroup>
           <Footer>
-            <Dialog isOpen={showDialog} onClose={toggleDialog}>
+            <Dialog isOpen={showDialog} onClose={closeFormTodoDialog}>
               <form
                 action={handleFormSubmit}
                 style={{
@@ -53,11 +55,15 @@ function App() {
                   alignItems: "center",
                 }}
               >
-                <TextInput name="task" placeholder="Digite uma nova tarefa" />
+                <TextInput
+                  name="task"
+                  placeholder="Digite uma nova tarefa"
+                  defaultValue={selectedTodo?.description}
+                />
                 <Button>Adicionar</Button>
               </form>
             </Dialog>
-            <FabButton onClick={toggleDialog}>
+            <FabButton onClick={openFormTodoDialog}>
               <IconPlus />
             </FabButton>
           </Footer>
