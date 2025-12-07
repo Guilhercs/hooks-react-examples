@@ -5,80 +5,24 @@ import { Footer } from "./components/Footer";
 import { Header } from "./components/Header";
 import { Heading } from "./components/Heading";
 import { IconPlus, IconSchool } from "./components/icons";
-import { SubHeading } from "./components/SubHeading";
-import { ToDoItem } from "./components/ToDoItem";
-import { ToDoList } from "./components/ToDoList";
 import { Dialog } from "./components/Dialog";
 import { TextInput } from "./components/TextInput";
 import { Button } from "./components/Button";
-import { useState } from "react";
-
-const todos = [
-  {
-    id: 1,
-    description: "JSX e componentes",
-    completed: false,
-    createdAt: "2022-10-31",
-  },
-  {
-    id: 2,
-    description: "Props, state e hooks",
-    completed: false,
-    createdAt: "2022-10-31",
-  },
-  {
-    id: 3,
-    description: "Ciclo de vida dos componentes",
-    completed: false,
-    createdAt: "2022-10-31",
-  },
-  {
-    id: 4,
-    description: "Testes unitários com Jest",
-    completed: false,
-    createdAt: "2022-10-31",
-  },
-];
+import { useState, use } from "react";
+import TodoContext from "./components/TodoProvider/TodoContext";
+import { TodoGroup } from "./components/TodoGroup";
 
 function App() {
-  const [todosList, setTodos] = useState(todos);
   const [showDialog, setShowDialog] = useState(false);
+  const { todosList, addTodo } = use(TodoContext);
 
   const toggleDialog = () => {
     setShowDialog(!showDialog);
   };
 
-  function addTodo(event) {
-    const newTodo = {
-      description: event.get("task"),
-      completed: false,
-      createdAt: new Date().toISOString(),
-    };
-
-    setTodos((prev) => {
-      return [...prev, { id: prev.length, ...newTodo }];
-    });
+  const handleFormSubmit = (formData) => {
+    addTodo(formData);
     toggleDialog();
-  }
-
-  const toggleTodoCompleted = (todo) => {
-    setTodos((prev) => {
-      return prev.map((item) => {
-        if (item.id === todo.id) {
-          return {
-            ...item,
-            completed: !item.completed,
-          };
-        }
-        return item;
-      });
-    });
-  };
-
-  const removeTodo = (item) => {
-    setTodos((prev) => {
-      return prev.filter((t) => t.id !== item.id);
-    });
   };
 
   return (
@@ -90,40 +34,18 @@ function App() {
           </Heading>
         </Header>
         <ChecklistsWrapper>
-          <SubHeading>Para estudar</SubHeading>
-          <ToDoList>
-            {todosList
-              .filter((item) => !item.completed)
-              .map(function (t) {
-                return (
-                  <ToDoItem
-                    key={t.id}
-                    item={t}
-                    onToggleCompleted={toggleTodoCompleted}
-                    onDeleteTodo={removeTodo}
-                  />
-                );
-              })}
-          </ToDoList>
-          <SubHeading>Concluído</SubHeading>
-          <ToDoList>
-            {todosList
-              .filter((item) => item.completed)
-              .map(function (t) {
-                return (
-                  <ToDoItem
-                    key={t.id}
-                    item={t}
-                    onToggleCompleted={toggleTodoCompleted}
-                    onDeleteTodo={removeTodo}
-                  />
-                );
-              })}
-          </ToDoList>
+          <TodoGroup
+            heading={"Para estudar"}
+            items={todosList.filter((item) => !item.completed)}
+          ></TodoGroup>
+          <TodoGroup
+            heading={"Concluído"}
+            items={todosList.filter((item) => item.completed)}
+          ></TodoGroup>
           <Footer>
             <Dialog isOpen={showDialog} onClose={toggleDialog}>
               <form
-                action={addTodo}
+                action={handleFormSubmit}
                 style={{
                   display: "flex",
                   flexDirection: "column",
