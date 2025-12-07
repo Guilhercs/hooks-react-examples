@@ -11,10 +11,12 @@ import { Button } from "./components/Button";
 import { use } from "react";
 import TodoContext from "./components/TodoProvider/TodoContext";
 import { TodoGroup } from "./components/TodoGroup";
+import { EmptyState } from "./components/EmptyState";
 
 function App() {
   const {
     addTodo,
+    editTodo,
     todosList,
     showDialog,
     selectedTodo,
@@ -23,7 +25,11 @@ function App() {
   } = use(TodoContext);
 
   const handleFormSubmit = (formData) => {
-    addTodo(formData);
+    if (selectedTodo) {
+      editTodo(formData);
+    } else {
+      addTodo(formData);
+    }
     closeFormTodoDialog();
   };
 
@@ -40,6 +46,7 @@ function App() {
             heading={"Para estudar"}
             items={todosList.filter((item) => !item.completed)}
           ></TodoGroup>
+          {todosList.length === 0 && <EmptyState />}
           <TodoGroup
             heading={"Concluído"}
             items={todosList.filter((item) => item.completed)}
@@ -63,7 +70,7 @@ function App() {
                 <Button>Adicionar</Button>
               </form>
             </Dialog>
-            <FabButton onClick={openFormTodoDialog}>
+            <FabButton onClick={() => openFormTodoDialog()}>
               <IconPlus />
             </FabButton>
           </Footer>

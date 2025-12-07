@@ -6,12 +6,12 @@ Um projeto prático desenvolvido passo a passo para quem já tem o básico de Re
 
 ## 🔨 Funcionalidades do projeto
 
-* Adição, edição e exclusão de tarefas
-* Organização das tarefas em "Para estudar" e "Concluído"
-* Marcação de tarefas como concluídas
-* Feedback visual para lista vazia (empty state)
-* Modal para adicionar/editar tarefas
-* Lista animada de tarefas
+- Adição, edição e exclusão de tarefas
+- Organização das tarefas em "Para estudar" e "Concluído"
+- Marcação de tarefas como concluídas
+- Feedback visual para lista vazia (empty state)
+- Modal para adicionar/editar tarefas
+- Lista animada de tarefas
 
 ![](screen-capture.png)
 
@@ -19,14 +19,14 @@ Um projeto prático desenvolvido passo a passo para quem já tem o básico de Re
 
 O desenvolvimento do projeto aborda as seguintes técnicas e tecnologias:
 
-* **useState e useEffect**: Gerenciamento de estado e persistência no localStorage
-* **useContext**: Contexto global para compartilhar estado das tarefas
-* **Componentização**: Componentes reutilizáveis como Button, FabButton, Dialog, TodoForm, TodoItem e TodoGroup
-* **Estilização com CSS Modules**: Organização dos estilos por componente
-* **Manipulação de formulários controlados**
-* **Persistência local com localStorage**: Salva as tarefas mesmo fechando o app
-* **Ícones SVG personalizados**
-* **Boas práticas de organização de código**
+- **useState e useEffect**: Gerenciamento de estado e persistência no localStorage
+- **useContext**: Contexto global para compartilhar estado das tarefas
+- **Componentização**: Componentes reutilizáveis como Button, FabButton, Dialog, TodoForm, TodoItem e TodoGroup
+- **Estilização com CSS Modules**: Organização dos estilos por componente
+- **Manipulação de formulários controlados**
+- **Persistência local com localStorage**: Salva as tarefas mesmo fechando o app
+- **Ícones SVG personalizados**
+- **Boas práticas de organização de código**
 
 ## 🛠️ Como rodar o projeto
 
@@ -46,13 +46,3 @@ npm run dev
 ```
 
 4. Acesse no navegador: [http://localhost:5173](http://localhost:5173) (Vite).
-
-## 📚 Mais informações do curso
-
-Curtiu o projeto e quer aprender na prática? O passo a passo completo faz parte do segundo ccurso da carreira React da Alura, com foco em experiência real de desenvolvimento, boas práticas e refatoração progressiva.
-
-Se quiser experimentar, explore o código e customize o checklist do seu jeito!
-
----
-
-Vida longa e próspera 🚀
